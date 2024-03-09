@@ -7,7 +7,7 @@ const client = new Client()
 
 const databases = new Databases(client);
 
-async function getDoc(id,res){
+async function getDoc(id,res,log){
   let promise = await databases.getDocument(
     process.env.APPWRITE_DATABASE_ID,
     process.env.APPWRITE_COLLECTION_ID,
@@ -26,7 +26,7 @@ async function getDoc(id,res){
   }
 }
 
-async function createDoc(url,res){
+async function createDoc(url,res,log){
 
 }
 
@@ -46,10 +46,10 @@ export default async ({ req, res, log, error }) => {
 
       if(promise){
         if(promise.total == 1){
-          return await getDoc(promise.documents[0].$id,res);
+          return await getDoc(promise.documents[0].$id,res,log);
         }
         else{
-          return await createDoc(url,res);
+          return await createDoc(url,res,log);
         }
       }
       else{
