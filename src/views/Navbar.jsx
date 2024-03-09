@@ -6,8 +6,8 @@ function Navbar(){
     <nav className= "border-gray-200 bg-gray-800">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a className="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src={logo} className="h-8" alt="Uptimer Logo" />
-                <span className="self-center text-2xl font-semibold whitespace-nowrap text-green-200">Uptimer</span>
+                <img src={logo} className="h-10 bg-green-200 p-1 rounded-lg" alt="Uptimer Logo" />
+                <span className="self-center text-2xl font-semibold whitespace-nowrap text-green-200 tracking-widest">uptimer</span>
             </a>
             <button data-collapse-toggle="navbar-default" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden  focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
                 <span className="sr-only">Open main menu</span>
