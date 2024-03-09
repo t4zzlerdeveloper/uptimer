@@ -89,9 +89,9 @@ export default async ({ req, res, log, error }) => {
   }
   else if(req.method == 'POST'){
 
-      log(req);
+      const doc = JSON.parse(req.bodyRaw)
 
-      //await handleSingleDoc(doc);
+      await handleSingleDoc(doc);
 
       return res.json({
         "success":true
