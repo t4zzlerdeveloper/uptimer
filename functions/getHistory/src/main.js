@@ -1,29 +1,67 @@
-import { Client } from 'node-appwrite';
+import { Client, Query} from 'node-appwrite';
 
-// This is your Appwrite function
-// It's executed each time we get a request
+const client = new Client()
+.setEndpoint('https://cloud.appwrite.io/v1')
+.setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+.setKey(process.env.APPWRITE_API_KEY);
+
+const databases = new Databases(client);
+
+async function getDoc(id){
+  let promise = await databases.getDocument(
+    process.env.APPWRITE_DATABASE_ID,
+    process.env.APPWRITE_COLLECTION_ID,
+    id
+  )
+
+  if(promise){
+    return res.json(promise);
+  }
+  else{
+    return res.json({
+      "success": false,
+      "error":"An error ocurred while trying to retreive the history of the provided url."
+    });
+  }
+}
+
+async function createDoc(url){
+
+}
+
+
 export default async ({ req, res, log, error }) => {
-  // Why not try the Appwrite SDK?
-  //
-  // const client = new Client()
-  //    .setEndpoint('https://cloud.appwrite.io/v1')
-  //    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-  //    .setKey(process.env.APPWRITE_API_KEY);
 
-  // You can log messages to the console
-  log('Hello, Logs!');
 
-  // If something goes wrong, log an error
-  error('Hello, Errors!');
-
-  // The `req` object contains the request data
   if (req.method === 'GET') {
-    // Send a response with the res object helpers
-    // `res.send()` dispatches a string back to the client
+
+    const url = req.query.url;
+
+    let promise = await databases.listDocuments(
+      process.env.APPWRITE_DATABASE_ID,
+      process.env.APPWRITE_COLLECTION_ID,
+      Query.equal("url", [url])
+    );
+
+      if(promise){
+        if(promise.total == 1){
+          return await getDoc(promise.documents[0]);
+        }
+        else{
+          return await createDoc(url);
+        }
+      }
+      else{
+        return res.json({
+          "success": false,
+          "error":"An error ocurred while trying to retreive the history of the provided url."
+        });
+      }
+    
+
     return res.send('Hello, World!');
   }
 
-  // `res.json()` is a handy helper for sending JSON
   return res.json({
     motto: 'Build like a team of hundreds_',
     learn: 'https://appwrite.io/docs',
