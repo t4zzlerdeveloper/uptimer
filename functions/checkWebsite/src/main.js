@@ -70,12 +70,12 @@ export default async ({ req, res, log, error }) => {
         if(promise && promise.total > 0){
           const resp = await handleDocs(promise.documents,log);
 
-          return res.status(200).json({
+          return res.json({
                   "success":true
                 });
         }
 
-          return res.status(400).json({
+          return res.json({
               "success":false,
               "error": err
           });
