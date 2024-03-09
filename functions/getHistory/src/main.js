@@ -7,6 +7,7 @@ const client = new Client()
 
 const databases = new Databases(client);
 
+
 async function getDoc(id,res,log){
   let promise = await databases.getDocument(
     process.env.APPWRITE_DATABASE_ID,

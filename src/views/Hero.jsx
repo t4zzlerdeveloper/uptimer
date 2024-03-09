@@ -9,8 +9,23 @@ const [url,setUrl] = useState("");
 const navigate = useNavigate();
 
 
+function isValidUrl(string) {
+    try {
+      new URL(string);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
 function handleMonitoring(){
-    navigate(`/monitor?url=${url}`);
+    if(isValidUrl(url)){
+        navigate(`/monitor?url=${url}`);
+    }
+    else{
+        alert("Invalid URL!")
+    }
+   
 }
 
 
@@ -28,7 +43,7 @@ function handleUrlChange(newUrl){
 
 return (<>
 
-<section className="bg-gray-900">
+<section className="bg-gray-900 min-h-screen">
     <div className="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
         <div className="mr-auto place-self-center lg:col-span-7">
             <h1 className="max-w-1xl mb-4 text-3xl font-extrabold tracking-tight leading-none md:text-4xl xl:text-5xl text-purple-300">Monitor your services<br></br> in real-time.</h1>
@@ -49,7 +64,7 @@ return (<>
 
         </div>
         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-            <img src={serversHero} alt="mockup"/>
+            <img className="scale-75" src={serversHero} alt="mockup"/>
         </div>                
     </div>
 </section>

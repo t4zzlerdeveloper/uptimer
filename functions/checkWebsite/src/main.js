@@ -47,14 +47,18 @@ function updateDoc(id,newHistory){
 }
 
 function handleSingleDoc(doc){
+  const start = Date.now();
+
   checkWebsite(doc.url, function(check){
 
     let newHistory = JSON.parse(doc.history);
+    const msSpent = (Date.now() - start);
 
     newHistory.unshift({
       "time": Date.now(),
       "code": check,
-      "online": check ? true : false
+      "online": check ? true : false,
+      "latency": msSpent
     });
 
     //Handle Appwrite limits

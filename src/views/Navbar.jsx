@@ -18,14 +18,16 @@ function Navbar(){
             <div className="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg bg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0  bg-gray-800 md:bg-gray-800 border-gray-700">
                 
-                <li>
-                    <a href="#" className="block py-2 px-3  rounded md:border-0 m md:p-0 text-gray-200 md:hover:text-green-200 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Get Started</a>
-                </li>
-                <li>
+           
+                <li className='py-1 px-3 '>
                     <a href="#" className="block py-2 px-3  rounded md:border-0  md:p-0  text-gray-300 md:hover:text-green-200 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Pricing</a>
                 </li>
-                <li>
-                    <a href="#" className="block py-2 px-3  rounded  md:border-0  md:p-0  text-gray-400 md:hover:text-green-200 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">About us</a>
+                <li className='py-1 px-3 '>
+                    <a href="#" className="block py-2 px-3  rounded  md:border-0  md:p-0  text-gray-300 md:hover:text-green-200 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">About us</a>
+                </li>
+
+                <li className='py-1 px-3 border border-gray-200 rounded hover:border-green-200 cursor-pointer'>
+                    <a onClick={()=>{window.open("https://github.com/t4zzlerdeveloper/uptimer")}} className="block py-2 px-3 rounded md:border-0 m md:p-0 text-gray-200 md:hover:text-green-200 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Star on GitHub</a>
                 </li>
 
             </ul>
