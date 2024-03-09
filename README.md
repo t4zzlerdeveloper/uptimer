@@ -1,4 +1,4 @@
- <img height="100" src="/public/uptimer-logo.webp"/>
+ <img height="100" src="/public/uptimer-logo.webp" alt="uptimer logo"/>
 
 # Uptimer - Monitor your services in real-time.
 
@@ -7,8 +7,7 @@
 ![](https://img.shields.io/github/issues/t4zzlerdeveloper/rubium?color=D8B4FE)
 ![](https://img.shields.io/github/license/t4zzlerdeveloper/rubium?color=D8B4FE)
 
- <img height="200" src="/src/assets/screenshots/MonitorPage.png"/>
- <img height="200" src="/src/assets/screenshots/LandingPage.png"/>
+ <img height="200" src="/src/assets/screenshots/showcase.png" alt="Showcase Image"/>
 
 
 ## 👋 Welcome!
