@@ -1,33 +1,99 @@
 import { Client } from 'node-appwrite';
 
-// This is your Appwrite function
-// It's executed each time we get a request
-export default async ({ req, res, log, error }) => {
-  // Why not try the Appwrite SDK?
-  //
-  // const client = new Client()
-  //    .setEndpoint('https://cloud.appwrite.io/v1')
-  //    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-  //    .setKey(process.env.APPWRITE_API_KEY);
+import https from 'https';
+import http from 'http';
 
-  // You can log messages to the console
-  log('Hello, Logs!');
+const client = new Client()
+.setEndpoint('https://cloud.appwrite.io/v1')
+.setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+.setKey(process.env.APPWRITE_API_KEY);
 
-  // If something goes wrong, log an error
-  error('Hello, Errors!');
 
-  // The `req` object contains the request data
-  if (req.method === 'GET') {
-    // Send a response with the res object helpers
-    // `res.send()` dispatches a string back to the client
-    return res.send('Hello, World!');
-  }
+function checkWebsite(url, callback) {
 
-  // `res.json()` is a handy helper for sending JSON
-  return res.json({
-    motto: 'Build like a team of hundreds_',
-    learn: 'https://appwrite.io/docs',
-    connect: 'https://appwrite.io/discord',
-    getInspired: 'https://builtwith.appwrite.io',
+  const client = url.startsWith("https://") ? https : http
+  
+    client
+      .get(url, function(res) {
+        console.log(url, res.statusCode);
+        return callback(res.statusCode);
+      })
+      .on("error", function(e) {
+        return callback(undefined);
+      });
+}
+
+function handleDocs(docs){
+  docs.map((doc)=>{
+    checkWebsite(doc.url, function(check){
+
+      let newHistory = JSON.parse(doc.history);
+      newHistory.unshift({
+        "time": Date.now(),
+        "code": check,
+        "online": check ? true : false
+      });
+
+
+      const promise = databases.updateDocument(
+        process.env.APPWRITE_DATABASE_ID,
+        process.env.APPWRITE_COLLECTION_ID,
+        doc.$id,
+        {
+          history:JSON.stringify(newHistory)
+        }
+      );
+
+      promise.then(()=>{
+        console.log("Sucessfully updated history for URL: " + doc.url)
+      })
+      .catch(()=>{
+        console.log("Error updating history for URL: " + doc.url)
+      })
+
+    })
   });
-};
+}
+
+function main(){
+  const databases = new Databases(client);
+
+  let promise = databases.listDocuments(
+   process.env.APPWRITE_DATABASE_ID,
+   process.env.APPWRITE_COLLECTION_ID
+  );
+
+  promise.then((docs)=>{
+   handleDocs(docs)
+  })
+  .catch((err)=>{
+   console.log(err)
+  })
+}
+
+main();
+
+
+// export default async ({ req, res, log, error }) => {
+  
+   
+  
+//      if (req.method === 'GET') {
+//       checkWebsite(req.query.url, function(check){
+  
+//         if(!check){
+//             return res.status(400).json({
+//                 status: undefined,
+//                 online: false,
+//               });
+//         }
+  
+//         return res.status(200).json({
+//             status: check,
+//             online: true
+//           });
+//       })
+
+//   }
+
+// };
