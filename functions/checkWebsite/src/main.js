@@ -25,35 +25,41 @@ function checkWebsite(url, callback) {
       });
 }
 
+function updateDoc(id,newHistory){
+  const promise = databases.updateDocument(
+    process.env.APPWRITE_DATABASE_ID,
+    process.env.APPWRITE_COLLECTION_ID,
+    id,
+    {
+      history:newHistory
+    }
+  );
+
+  promise.then(()=>{
+    log("Sucessfully updated history for URL: " + doc.url)
+  })
+  .catch(()=>{
+    log("Error updating history for URL: " + doc.url)
+  })
+}
+
+function handleSingleDoc(doc){
+  checkWebsite(doc.url, function(check){
+
+    let newHistory = JSON.parse(doc.history);
+    newHistory.unshift({
+      "time": Date.now(),
+      "code": check,
+      "online": check ? true : false
+    });
+
+    updateDoc(id,JSON.stringify(newHistory));
+  });
+}
+
 function handleDocs(docs,log){
   docs.map((doc)=>{
-    checkWebsite(doc.url, function(check){
-
-      let newHistory = JSON.parse(doc.history);
-      newHistory.unshift({
-        "time": Date.now(),
-        "code": check,
-        "online": check ? true : false
-      });
-
-
-      const promise = databases.updateDocument(
-        process.env.APPWRITE_DATABASE_ID,
-        process.env.APPWRITE_COLLECTION_ID,
-        doc.$id,
-        {
-          history:JSON.stringify(newHistory)
-        }
-      );
-
-      promise.then(()=>{
-        log("Sucessfully updated history for URL: " + doc.url)
-      })
-      .catch(()=>{
-        log("Error updating history for URL: " + doc.url)
-      })
-
-    })
+    handleSingleDoc(doc);
   });
 }
 
@@ -68,7 +74,7 @@ export default async ({ req, res, log, error }) => {
         );
 
         if(promise && promise.total > 0){
-          const resp = await handleDocs(promise.documents,log);
+          await handleDocs(promise.documents,log);
 
           return res.json({
                   "success":true
@@ -77,10 +83,20 @@ export default async ({ req, res, log, error }) => {
         else{
           return res.json({
             "success":false
-        });
+          });
         }  
-
-
+      
   }
+  else if(req.method == 'POST'){
+
+      log(req);
+
+      //await handleSingleDoc(doc);
+
+      return res.json({
+        "success":true
+      });
+  }
+  
 
 };
