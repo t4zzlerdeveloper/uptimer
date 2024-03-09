@@ -1,4 +1,4 @@
-import { Client, Query,Databases} from 'node-appwrite';
+import { Client, Query,Databases,ID} from 'node-appwrite';
 
 const client = new Client()
 .setEndpoint('https://cloud.appwrite.io/v1')
@@ -31,6 +31,7 @@ async function createDoc(url,res,log){
   let promise = await databases.createDocument(
     process.env.APPWRITE_DATABASE_ID,
     process.env.APPWRITE_COLLECTION_ID,
+    ID.unique(),
     {url:url}
   )
 
