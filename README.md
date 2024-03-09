@@ -7,7 +7,7 @@
 ![](https://img.shields.io/github/issues/t4zzlerdeveloper/rubium?color=D8B4FE)
 ![](https://img.shields.io/github/license/t4zzlerdeveloper/rubium?color=D8B4FE)
 
- <img height="200" src="/src/assets/screenshots/showcase.png" alt="Showcase Image"/>
+ <img height="200" src="/src/assets/screenshots/showcase.webp" alt="Showcase Image"/>
 
 
 ## 👋 Welcome!
