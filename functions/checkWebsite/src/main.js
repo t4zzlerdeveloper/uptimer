@@ -53,7 +53,7 @@ function handleSingleDoc(doc){
       "online": check ? true : false
     });
 
-    updateDoc(id,JSON.stringify(newHistory));
+    updateDoc(doc.$id,JSON.stringify(newHistory));
   });
 }
 
@@ -89,7 +89,7 @@ export default async ({ req, res, log, error }) => {
   }
   else if(req.method == 'POST'){
 
-      const doc = JSON.parse(req.bodyRaw)
+      const doc = JSON.parse(req.bodyRaw);
 
       await handleSingleDoc(doc);
 
