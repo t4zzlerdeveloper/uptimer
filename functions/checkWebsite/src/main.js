@@ -25,7 +25,7 @@ function checkWebsite(url, callback) {
       });
 }
 
-function handleDocs(docs){
+function handleDocs(docs,log){
   docs.map((doc)=>{
     checkWebsite(doc.url, function(check){
 
@@ -47,10 +47,10 @@ function handleDocs(docs){
       );
 
       promise.then(()=>{
-        console.log("Sucessfully updated history for URL: " + doc.url)
+        log("Sucessfully updated history for URL: " + doc.url)
       })
       .catch(()=>{
-        console.log("Error updating history for URL: " + doc.url)
+        log("Error updating history for URL: " + doc.url)
       })
 
     })
@@ -67,8 +67,10 @@ export default async ({ req, res, log, error }) => {
         process.env.APPWRITE_COLLECTION_ID
         );
 
+        log(JSON.stringify(promise));
+
         if(promise){
-          const resp = await handleDocs(promise.data);
+          const resp = await handleDocs(promise.data,log);
 
           return res.status(200).json({
                   "success":true
