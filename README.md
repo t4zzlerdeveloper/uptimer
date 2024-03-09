@@ -7,6 +7,8 @@
 ![](https://img.shields.io/github/issues/t4zzlerdeveloper/rubium?color=D8B4FE)
 ![](https://img.shields.io/github/license/t4zzlerdeveloper/rubium?color=D8B4FE)
 
+ <img height="200" src="/src/assets/screenshots/MonitorPage.png"/>
+
 
 ## 👋 Welcome!
 

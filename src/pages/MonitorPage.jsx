@@ -115,7 +115,7 @@ function MonitorPage(){
         
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg rounded m-10">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 grid grid-cols-1 gap-5 ">
-                <caption className="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800 rounded-lg">
+                <caption className="p-5 text-lg font-semibold text-left rtl:text-right  text-white bg-gray-800 rounded-lg">
                     <div className="flex gap-3">
                         <img 
                         className="w-6"
