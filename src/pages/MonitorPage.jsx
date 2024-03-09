@@ -39,16 +39,18 @@ function MonitorPage(){
           'GET'
           ).then((res)=>{
             const body = JSON.parse(res.responseBody);
-            const history = JSON.parse(body.history);
-            if(history.length == 0){
-                setTimeout(()=>{
-                    fetchHistory(urlParam);
-                },1250)
-            }
-            else{
-                setLoading(false);
-            }
+            if(body && body.history){
+                const history = JSON.parse(body.history);
+                if(history.length == 0){
+                    setTimeout(()=>{
+                        fetchHistory(urlParam);
+                    },1250)
+                }
+                else{
+                    setLoading(false);
+                }
             setHistory(history);
+        }
           })
           .catch(()=>{
             setHistory(null);
@@ -139,7 +141,7 @@ function MonitorPage(){
             </tr>
         </thead>
         <tbody>
-        {history.map((data)=>{
+        {history && history.map((data)=>{
             return <tr key={data.time} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" className="px-6 py-4">
                     {parseDateTime(data.time)}

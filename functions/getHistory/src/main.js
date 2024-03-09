@@ -64,7 +64,7 @@ export default async ({ req, res, log, error }) => {
 
   if (req.method === 'GET') {
 
-   let url = req.query.url;
+    let url = req.query.url;
 
     if(!url || !isValidUrl(url) || url.includes("uptimer-live.vercel.app") || url.includes("localhost")){
       return res.json({
@@ -74,7 +74,7 @@ export default async ({ req, res, log, error }) => {
     }
 
     if(url.endsWith("/")){
-      url = url.splice(0,-1);
+      url = url.slice(0,-1);
     }
 
     let promise = await databases.listDocuments(
