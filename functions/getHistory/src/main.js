@@ -40,7 +40,7 @@ export default async ({ req, res, log, error }) => {
     let promise = await databases.listDocuments(
       process.env.APPWRITE_DATABASE_ID,
       process.env.APPWRITE_COLLECTION_ID,
-      Query.equal("url", [url])
+      [Query.equal("url", [url])]
     );
 
       if(promise){
