@@ -28,6 +28,23 @@ async function getDoc(id,res,log){
 
 async function createDoc(url,res,log){
 
+  let promise = await databases.createDocument(
+    process.env.APPWRITE_DATABASE_ID,
+    process.env.APPWRITE_COLLECTION_ID,
+    {url:url}
+  )
+
+  if(promise){
+    log(promise);
+    return res.json(promise);
+  }
+  else{
+    return res.json({
+      "success": false,
+      "error":"An error ocurred while trying to retreive the history of the provided url."
+    });
+  }
+
 }
 
 
