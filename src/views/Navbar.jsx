@@ -1,11 +1,14 @@
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/uptimer-logo.webp'
 
 function Navbar(){
+
+    const navigate = useNavigate();
     return (<>
     
     <nav className= "border-gray-200 bg-gray-800">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a className="flex items-center space-x-3 rtl:space-x-reverse">
+            <a className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer" onClick={()=>{navigate("../")}}>
                 <img src={logo} className="h-10 bg-green-200 p-1 rounded-lg" alt="Uptimer Logo" />
                 <span className="self-center text-2xl font-semibold whitespace-nowrap text-green-200 tracking-widest">uptimer</span>
             </a>

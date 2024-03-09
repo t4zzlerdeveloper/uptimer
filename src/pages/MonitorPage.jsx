@@ -5,6 +5,7 @@ import defaultFavicon from '../assets/public.svg'
 import { avatars,databases,functions } from "../lib/appwrite";
 import Navbar from "../views/Navbar";
 import Loader from "../views/Loader";
+import ChartVisualizer from "../views/ChartVisualizer";
 
 
 function MonitorPage(){
@@ -54,7 +55,9 @@ function MonitorPage(){
           })
           .catch(()=>{
             setHistory(null);
-            setLoading(false);
+            setTimeout(()=>{
+                fetchHistory(urlParam);
+            },500)
           })
 
     }
@@ -89,10 +92,11 @@ function MonitorPage(){
         <Navbar/>
         
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg rounded m-10">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <caption className="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 grid grid-cols-1 gap-5 ">
+                <caption className="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800 rounded-lg">
                     <div className="flex gap-3">
                         <img 
+                        className="w-6"
                         src={favicon && favLoaded ? favicon : defaultFavicon} 
                         alt={url + " favicon"} 
                         onError={()=>{setFavLoaded(false)}}/>
@@ -110,6 +114,9 @@ function MonitorPage(){
                   
                     <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Down bellow you can see the monitoring history of this website, including status, code, latency and when the check was performed.</p>
                 </caption>
+                <caption>
+                <ChartVisualizer data={history}/>
+                </caption>
             </table>
         </div>
         
@@ -122,6 +129,7 @@ function MonitorPage(){
     <p>No history found, we will start monitoring this website from now on!</p>
     </div> 
      :
+<>
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg rounded m-10">
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -159,7 +167,7 @@ function MonitorPage(){
         })}
         </tbody>
     </table>
-</div>}
+</div></>}
 
     </div>)
 
