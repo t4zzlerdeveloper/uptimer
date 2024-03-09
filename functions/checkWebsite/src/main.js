@@ -4,9 +4,11 @@ import https from 'https';
 import http from 'http';
 
 const client = new Client()
-.setEndpoint('https://cloud.appwrite.io/v1')
-.setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-.setKey(process.env.APPWRITE_API_KEY);
+  .setEndpoint('https://cloud.appwrite.io/v1')
+  .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+  .setKey(process.env.APPWRITE_API_KEY);
+
+const databases = new Databases(client);
 
 
 function checkWebsite(url, callback) {
@@ -55,45 +57,24 @@ function handleDocs(docs){
   });
 }
 
-function main(){
-  const databases = new Databases(client);
 
-  let promise = databases.listDocuments(
-   process.env.APPWRITE_DATABASE_ID,
-   process.env.APPWRITE_COLLECTION_ID
-  );
-
-  promise.then((docs)=>{
-   handleDocs(docs)
-  })
-  .catch((err)=>{
-   console.log(err)
-  })
-}
-
-main();
-
-
-// export default async ({ req, res, log, error }) => {
+export default async ({ req, res, log, error }) => {
   
-   
   
-//      if (req.method === 'GET') {
-//       checkWebsite(req.query.url, function(check){
-  
-//         if(!check){
-//             return res.status(400).json({
-//                 status: undefined,
-//                 online: false,
-//               });
-//         }
-  
-//         return res.status(200).json({
-//             status: check,
-//             online: true
-//           });
-//       })
+     if (req.method === 'GET') {
 
-//   }
+      let promise = databases.listDocuments(
+       process.env.APPWRITE_DATABASE_ID,
+       process.env.APPWRITE_COLLECTION_ID
+      );
+ 
+      promise.then((docs)=>{
+       handleDocs(docs)
+      })
+      .catch((err)=>{
+       console.log(err)
+      })
 
-// };
+  }
+
+};
