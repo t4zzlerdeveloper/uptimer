@@ -67,10 +67,8 @@ export default async ({ req, res, log, error }) => {
         process.env.APPWRITE_COLLECTION_ID
         );
 
-        log(JSON.stringify(promise));
-
-        if(promise){
-          const resp = await handleDocs(promise.data,log);
+        if(promise && promise.total > 0){
+          const resp = await handleDocs(promise.documents,log);
 
           return res.status(200).json({
                   "success":true
