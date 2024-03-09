@@ -66,13 +66,13 @@ export default async ({ req, res, log, error }) => {
 
     const url = req.query.url;
 
-    if(!url || !isValidUrl(url)){
+    if(!url || !isValidUrl(url) || url.includes("uptimer-live.vercel.app") || url.includes("localhost")){
       return res.json({
         "success": false,
         "error":"Invalid URL provided!."
       });
     }
-    
+
     let promise = await databases.listDocuments(
       process.env.APPWRITE_DATABASE_ID,
       process.env.APPWRITE_COLLECTION_ID,
