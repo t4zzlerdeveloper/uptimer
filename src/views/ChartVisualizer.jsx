@@ -28,13 +28,13 @@ function ChartVisualizer(props){
 
       useEffect(()=>{
         setChartData({
-            labels: props.data && props.data.map((data) => parseTime(data.time)).slice(0,100).reverse(), 
+            labels: props.data && props.data.map((data) => parseTime(data.time)).slice(0,22).reverse(), 
             datasets: [
               {
                 type:"line",
                 label: "Latency",
-                data: props.data && props.data.map((data) => data.latency || 0).slice(0,100).reverse(),
-                backgroundColor: "#c596f9",
+                data: props.data && props.data.map((data) => data.latency || 0).slice(0,22).reverse(),
+                backgroundColor: "#d8b4fe",
                 borderColor:"#ffffff81",
                 pointHoverRadius: 6,
                 pointHoverBorderColor: "rgba(220,220,220,1)",
@@ -48,7 +48,7 @@ function ChartVisualizer(props){
                 type:"bar",
                 label: "Online",
                 data: props.data && props.data.map((data) => data.online ? 100 : 0).slice(0,100).reverse(),
-                backgroundColor: "#50af962a",
+                backgroundColor: "#99f6e33e",
                 pointHoverRadius: 6,
                 pointHoverBorderColor: "rgba(220,220,220,1)",
                 pointHoverBorderWidth: 4,

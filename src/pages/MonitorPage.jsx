@@ -6,7 +6,10 @@ import { avatars,databases,functions } from "../lib/appwrite";
 import Navbar from "../views/Navbar";
 import Loader from "../views/Loader";
 import ChartVisualizer from "../views/ChartVisualizer";
+import Footer from "../views/Footer";
 
+
+import errors from '../errors.json'
 
 function MonitorPage(){
 
@@ -62,6 +65,25 @@ function MonitorPage(){
 
     }
 
+
+    function getLatencyColor(latency) {
+        const colorThresholds = [
+            { color: "text-green-300", threshold: 100 }, 
+            { color: "text-yellow-300", threshold: 100 },
+            { color: "text-orange-300", threshold: 500 }, 
+            { color: "text-red-300", threshold: Infinity } 
+        ];
+    
+        for (const threshold of colorThresholds) {
+            if (latency < threshold.threshold) {
+                return threshold.color;
+            }
+        }
+
+        return "text-red-300";
+    }
+
+
     function parseLeadingZeros(number){
         const n = number.toString();
         return n.length == 1 ? "0" + n : n
@@ -103,7 +125,7 @@ function MonitorPage(){
                         
                         <p className="text-purple-300">{url}</p>
 
-                        {!loading && <button onClick={()=>{fetchHistory(url)}} className=" cursor-pointer text-xs flex items-center px-2 py-0.5 font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform opacity-75 bg-gray-200 rounded-lg hover:bg-green-300 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80">
+                        {!loading && <button onClick={()=>{fetchHistory(url)}} className=" cursor-pointer text-xs flex items-center px-2 py-0.5 font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform opacity-75 bg-gray-200 rounded-lg hover:bg-green-200 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80">
                         <svg className="w-3 h-3 mx-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
                         </svg>
@@ -114,14 +136,14 @@ function MonitorPage(){
                   
                     <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Down bellow you can see the monitoring history of this website, including status, code, latency and when the check was performed.</p>
                 </caption>
-                <caption>
+                {!loading && <caption>
                 <ChartVisualizer data={history}/>
-                </caption>
+                </caption>}
             </table>
         </div>
         
 
-{loading ? <div className="flex place-content-center">
+{loading ? <div className="flex place-content-center min-h-screen">
     <Loader/>
     </div> : 
     history && history.length == 0 ?
@@ -131,11 +153,11 @@ function MonitorPage(){
      :
 <>
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg rounded m-10">
-    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
+        <thead className="text-xs  uppercase  bg-gray-800 text-gray-400">
             <tr>
                 <th scope="col" className="px-6 py-3">
-                    Time
+                    Checked at
                 </th>
                 <th scope="col" className="px-6 py-3">
                     Status
@@ -150,7 +172,7 @@ function MonitorPage(){
         </thead>
         <tbody>
         {history && history.map((data)=>{
-            return <tr key={data.time} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            return <tr key={data.time} className="odd:opacity-75 border-b bg-gray-800 border-gray-700">
                 <th scope="row" className="px-6 py-4">
                     {parseDateTime(data.time)}
                 </th>
@@ -158,16 +180,19 @@ function MonitorPage(){
                     {data.online ? <p className="text-green-400">Online</p> : <p className="text-red-400">Offline</p>}
                 </td>
                 <td className="px-6 py-4">
-                    {data.code}
+                    <b className="text-purple-200">{data.code}</b>{" (" + errors[data.code] + ")"}
                 </td>
                 <td className="px-6 py-4">
-                    {data.latency ? (data.latency + " ms") : "--"}
+                    {data.latency ? <span className={getLatencyColor(data.latency)}>{data.latency} ms</span> : "--"}
                 </td>
+               
             </tr>
         })}
         </tbody>
     </table>
 </div></>}
+
+<Footer/>
 
     </div>)
 
