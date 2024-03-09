@@ -57,6 +57,13 @@ export default async ({ req, res, log, error }) => {
 
     const url = req.query.url;
 
+    if(!url){
+      return res.json({
+        "success": false,
+        "error":"An error ocurred while trying to retreive the history of the provided url."
+      });
+    }
+
     let promise = await databases.listDocuments(
       process.env.APPWRITE_DATABASE_ID,
       process.env.APPWRITE_COLLECTION_ID,
