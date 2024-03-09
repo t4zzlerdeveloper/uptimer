@@ -69,10 +69,17 @@ export default async ({ req, res, log, error }) => {
       );
  
       promise.then((docs)=>{
-       handleDocs(docs)
+        handleDocs(docs)
+        return res.status(200).json({
+          "success":true
+        });
       })
       .catch((err)=>{
-       console.log(err)
+        console.log(err)
+        return res.status(400).json({
+           "success":false,
+            "error": err
+        });
       })
 
   }
