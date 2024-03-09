@@ -74,11 +74,11 @@ export default async ({ req, res, log, error }) => {
                   "success":true
                 });
         }
-
+        else{
           return res.json({
-              "success":false,
-              "error": err
-          });
+            "success":false
+        });
+        }  
 
 
   }
