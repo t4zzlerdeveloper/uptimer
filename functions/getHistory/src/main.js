@@ -45,7 +45,7 @@ export default async ({ req, res, log, error }) => {
 
       if(promise){
         if(promise.total == 1){
-          return await getDoc(promise.documents[0]);
+          return await getDoc(promise.documents[0].$id);
         }
         else{
           return await createDoc(url);
