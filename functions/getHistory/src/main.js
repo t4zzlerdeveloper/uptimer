@@ -50,6 +50,15 @@ async function createDoc(url,res,log){
 }
 
 
+function isValidUrl(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
 export default async ({ req, res, log, error }) => {
 
 
@@ -57,10 +66,10 @@ export default async ({ req, res, log, error }) => {
 
     const url = req.query.url;
 
-    if(!url){
+    if(!url || !isValidUrl(url)){
       return res.json({
         "success": false,
-        "error":"An error ocurred while trying to retreive the history of the provided url."
+        "error":"Invalid URL provided!."
       });
     }
 
