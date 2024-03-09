@@ -73,6 +73,10 @@ export default async ({ req, res, log, error }) => {
       });
     }
 
+    if(url.endsWith("/")){
+      url = url.slice(0, -1);
+    }
+
     let promise = await databases.listDocuments(
       process.env.APPWRITE_DATABASE_ID,
       process.env.APPWRITE_COLLECTION_ID,
