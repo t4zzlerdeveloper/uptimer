@@ -71,32 +71,38 @@ function handleDocs(docs,log){
   });
 }
 
+async function updateAllUrls(){
+
+  let promise = await databases.listDocuments(
+    process.env.APPWRITE_DATABASE_ID,
+    process.env.APPWRITE_COLLECTION_ID
+    );
+
+    if(promise && promise.total > 0){
+      await handleDocs(promise.documents,log);
+
+      return res.json({
+              "success":true
+            });
+    }
+    else{
+      return res.json({
+        "success":false
+      });
+    }  
+}
+
 
 export default async ({ req, res, log, error }) => {
   
       if (req.method === 'GET') {
 
-        let promise = await databases.listDocuments(
-        process.env.APPWRITE_DATABASE_ID,
-        process.env.APPWRITE_COLLECTION_ID
-        );
-
-        if(promise && promise.total > 0){
-          await handleDocs(promise.documents,log);
-
-          return res.json({
-                  "success":true
-                });
-        }
-        else{
-          return res.json({
-            "success":false
-          });
-        }  
+      return updateAllUrls();
       
   }
   else if(req.method == 'POST'){
 
+    try{
       const doc = JSON.parse(req.bodyRaw);
 
       await handleSingleDoc(doc);
@@ -104,6 +110,10 @@ export default async ({ req, res, log, error }) => {
       return res.json({
         "success":true
       });
+    }
+    catch{
+      return updateAllUrls();
+    }
   }
   
 
