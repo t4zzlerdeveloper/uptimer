@@ -4,6 +4,7 @@ import defaultFavicon from '../assets/public.svg'
 
 import { avatars,databases,functions } from "../lib/appwrite";
 import Navbar from "../views/Navbar";
+import Loader from "../views/Loader";
 
 
 function MonitorPage(){
@@ -15,6 +16,8 @@ function MonitorPage(){
     
     const [history, setHistory] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+
     useEffect(()=>{
         const urlParam = searchParams.get("url");
         setUrl(urlParam);
@@ -23,6 +26,8 @@ function MonitorPage(){
     },[searchParams])
 
     function fetchHistory(urlParam){
+
+        setLoading(true);
 
         const query = `?url=${urlParam}`
 
@@ -35,9 +40,11 @@ function MonitorPage(){
           ).then((res)=>{
             const body = JSON.parse(res.responseBody);
             setHistory(JSON.parse(body.history));
+            setLoading(false);
           })
           .catch(()=>{
             setHistory([]);
+            setLoading(false);
           })
 
     }
@@ -46,7 +53,6 @@ function MonitorPage(){
        
         <Navbar/>
         
-
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg rounded m-10">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <caption className="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
@@ -55,14 +61,32 @@ function MonitorPage(){
                         src={favicon && favLoaded ? favicon : defaultFavicon} 
                         alt={url + " favicon"} 
                         onError={()=>{setFavLoaded(false)}}/>
-                        {url}
+                        
+                        <p className="text-purple-300">{url}</p>
+
+                        {!loading && <button onClick={()=>{fetchHistory(url)}} className=" cursor-pointer text-xs flex items-center px-2 py-1 font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform bg-green-200 rounded-lg hover:bg-green-300 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80">
+                        <svg className="w-3 h-3 mx-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                        </svg>
+
+                        <span className="mx-0.5">Refresh</span>
+                    </button>}
                     </div>
                   
                     <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Down bellow you can see the monitoring history of this website, including status, code, latency and when the check was performed.</p>
                 </caption>
             </table>
         </div>
+        
 
+{loading ? <div className="flex place-content-center">
+    <Loader/>
+    </div> : 
+    history.length == 0 ?
+    <div className="flex place-content-center">
+    <p>No history found, we will start monitoring this website from now on!</p>
+    </div> 
+     :
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg rounded m-10">
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -100,7 +124,7 @@ function MonitorPage(){
         })}
         </tbody>
     </table>
-</div>
+</div>}
 
     </div>)
 
