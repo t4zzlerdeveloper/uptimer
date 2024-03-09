@@ -60,27 +60,26 @@ function handleDocs(docs){
 
 export default async ({ req, res, log, error }) => {
   
-  
-     if (req.method === 'GET') {
+      if (req.method === 'GET') {
 
-      let promise = databases.listDocuments(
-       process.env.APPWRITE_DATABASE_ID,
-       process.env.APPWRITE_COLLECTION_ID
-      );
- 
-      promise.then((docs)=>{
-        handleDocs(docs)
-        return res.status(200).json({
-          "success":true
-        });
-      })
-      .catch((err)=>{
-        console.log(err)
-        return res.status(400).json({
-           "success":false,
-            "error": err
-        });
-      })
+        let promise = await databases.listDocuments(
+        process.env.APPWRITE_DATABASE_ID,
+        process.env.APPWRITE_COLLECTION_ID
+        );
+
+        if(promise){
+          const resp = await handleDocs(promise.data);
+
+          return res.status(200).json({
+                  "success":true
+                });
+        }
+
+          return res.status(400).json({
+              "success":false,
+              "error": err
+          });
+
 
   }
 
