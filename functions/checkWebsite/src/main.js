@@ -71,7 +71,7 @@ function handleDocs(docs,log){
   });
 }
 
-async function updateAllUrls(){
+async function updateAllUrls(res,log){
 
   let promise = await databases.listDocuments(
     process.env.APPWRITE_DATABASE_ID,
@@ -97,7 +97,7 @@ export default async ({ req, res, log, error }) => {
   
       if (req.method === 'GET') {
 
-      return updateAllUrls();
+      return updateAllUrls(res,log);
       
   }
   else if(req.method == 'POST'){
@@ -112,7 +112,7 @@ export default async ({ req, res, log, error }) => {
       });
     }
     catch{
-      return updateAllUrls();
+      return updateAllUrls(res,log);
     }
   }
   
