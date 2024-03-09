@@ -4,6 +4,7 @@ import https from 'https';
 import http from 'http';
 
 //TODO: Simulate a Client/Browser
+//! CRON Schedule is buggy
 
 const client = new Client()
   .setEndpoint('https://cloud.appwrite.io/v1')
