@@ -12,7 +12,7 @@ const navigate = useNavigate();
 function isValidUrl(string) {
     try {
       new URL(string);
-      return true;
+      return true || !string.includes("uptimer-live.vercel.app") || !string.includes("localhost");
     } catch (err) {
       return false;
     }

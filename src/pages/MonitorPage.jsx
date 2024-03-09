@@ -15,9 +15,8 @@ function MonitorPage(){
 
     const [searchParams] = useSearchParams();
     const [url,setUrl] = useState(null);
-    const [favicon,setFavicon] = useState(null);
     const [favLoaded,setFavLoaded] = useState(true);
-    
+    const [favicon,setFavicon] = useState(null);
     const [history, setHistory] = useState(null);
 
     const [loading, setLoading] = useState(true);
@@ -26,7 +25,7 @@ function MonitorPage(){
         const urlParam = searchParams.get("url");
         setUrl(urlParam);
         if(urlParam) fetchHistory(urlParam);
-        if(urlParam) setFavicon(avatars.getFavicon(url));
+        if(urlParam) setFavicon(avatars.getFavicon(urlParam));
     },[searchParams])
 
     function fetchHistory(urlParam){
@@ -118,15 +117,15 @@ function MonitorPage(){
                 <caption className="p-5 text-lg font-semibold text-left rtl:text-right  text-white bg-gray-800 rounded-lg">
                     <div className="flex gap-3">
                         <img 
-                        className="w-6"
+                        className="my-1 w-7 h-7 bg-purple-300 p-1 rounded-lg grayscale-50"
                         src={favicon && favLoaded ? favicon : defaultFavicon} 
                         alt={url + " favicon"} 
                         onError={()=>{setFavLoaded(false)}}/>
                         
-                        <p className="text-purple-300">{url}</p>
+                        <p className="text-purple-300 text-2xl">{url}</p>
 
-                        {!loading && <button onClick={()=>{fetchHistory(url)}} className=" cursor-pointer text-xs flex items-center px-2 py-0.5 font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform opacity-75 bg-gray-200 rounded-lg hover:bg-green-200 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80">
-                        <svg className="w-3 h-3 mx-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        {!loading && <button onClick={()=>{fetchHistory(url)}} className="absolute top-4 right-4 cursor-pointer text-base flex items-center px-2 py-0.5 font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform opacity-75 bg-gray-200 rounded-lg hover:bg-green-200 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80">
+                        <svg className="w-4 h-4 mx-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
                         </svg>
 
