@@ -3,6 +3,8 @@ import { Client,Databases } from 'node-appwrite';
 import https from 'https';
 import http from 'http';
 
+//TODO: Simulate a Client/Browser
+
 const client = new Client()
   .setEndpoint('https://cloud.appwrite.io/v1')
   .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
@@ -47,11 +49,17 @@ function handleSingleDoc(doc){
   checkWebsite(doc.url, function(check){
 
     let newHistory = JSON.parse(doc.history);
+
     newHistory.unshift({
       "time": Date.now(),
       "code": check,
       "online": check ? true : false
     });
+
+    //Handle Appwrite limits
+    if(JSON.stringify(newHistory).length >= 9000) {
+      newHistory = newHistory.pop();
+    }
 
     updateDoc(doc.$id,JSON.stringify(newHistory));
   });
