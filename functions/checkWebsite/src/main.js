@@ -63,7 +63,7 @@ function handleSingleDoc(doc){
 
     //Handle Appwrite limits
     if(JSON.stringify(newHistory).length >= 9000) {
-      newHistory = newHistory.pop();
+      newHistory.pop();
     }
 
     updateDoc(doc.$id,JSON.stringify(newHistory));
