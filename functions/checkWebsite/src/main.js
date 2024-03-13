@@ -58,7 +58,7 @@ function handleSingleDoc(doc){
       "time": Date.now(),
       "code": check,
       "online": check ? true : false,
-      "latency": msSpent
+      "latency": check ? msSpent : undefined
     });
 
     //Handle Appwrite limits

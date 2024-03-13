@@ -18,6 +18,7 @@ function MonitorPage(){
     const [favLoaded,setFavLoaded] = useState(true);
     const [favicon,setFavicon] = useState(null);
     const [history, setHistory] = useState(null);
+    const [stats, setStats] = useState(null);
 
     const [loading, setLoading] = useState(true);
 
@@ -27,6 +28,34 @@ function MonitorPage(){
         if(urlParam) fetchHistory(urlParam);
         if(urlParam) setFavicon(avatars.getFavicon(urlParam));
     },[searchParams])
+
+
+    function updateUptime(hist){
+       let avgLatency = 0;
+       let uptime = 0;
+       hist.map((h)=>{
+         uptime += h.online ? 1 : 0;
+         avgLatency += h.latency;
+       })
+
+       avgLatency /= hist.length;
+       uptime /= hist.length;
+
+       setStats({
+            uptime:uptime.toFixed(2),
+            avgLatency:avgLatency.toFixed(2),
+       })
+    }
+
+    useEffect(()=>{
+        if(history && history.length > 0){
+            updateUptime(history);
+        }
+        else{
+            setStats(null)
+        }
+    },[history])
+
 
     function fetchHistory(urlParam){
 
@@ -111,7 +140,6 @@ function MonitorPage(){
     return (<div className="text-white bg-gray-900 min-h-screen">
        
         <Navbar/>
-        
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg rounded m-10">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 grid grid-cols-1 gap-5 ">
                 <caption className="p-5 text-lg font-semibold text-left rtl:text-right  text-white bg-gray-800 rounded-lg">
@@ -124,22 +152,33 @@ function MonitorPage(){
                         
                         <p className="text-purple-300 text-2xl">{url}</p>
 
+                     
+
                         {!loading && <button onClick={()=>{fetchHistory(url)}} className="absolute top-4 right-4 cursor-pointer text-base flex items-center px-2 py-0.5 font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform opacity-75 bg-gray-200 rounded-lg hover:bg-green-200 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-80">
+                        
+                        
                         <svg className="w-4 h-4 mx-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
                         </svg>
+                        
 
                         <span className="mx-0.5">Refresh</span>
                     </button>}
+                   
                     </div>
                   
                     <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Down bellow you can see the monitoring history of this website, including status, code, latency and when the check was performed.</p>
                 </caption>
+                {stats && !loading && <div className="bg-gray-900 flex gap-8 px-4 py-0 rounded-2xl text-sm my-auto text-gray-600 font-normal mx-2">
+                        <p><b className="font-bold text-blue-300">{(stats.uptime * 100)+ "%"}</b>&nbsp;&nbsp;of Uptime</p>
+                        <p><b className="font-bold text-blue-300">{(stats.avgLatency) + " ms"}</b>&nbsp;&nbsp;Avg. Latency</p>
+                    </div>}
                 {!loading && <caption>
                 <ChartVisualizer data={history}/>
                 </caption>}
             </table>
         </div>
+        
         
 
 {loading ? <div className="flex place-content-center min-h-screen">
@@ -178,12 +217,22 @@ function MonitorPage(){
                 <td className="px-6 py-4 font-medium whitespace-nowra">
                     {data.online ? <p className="text-green-400">Online</p> : <p className="text-red-400">Offline</p>}
                 </td>
+                {data.code ? <>
                 <td className="px-6 py-4">
                     <b className="text-purple-200">{data.code}</b>{" (" + errors[data.code] + ")"}
                 </td>
-                <td className="px-6 py-4">
-                    {data.latency ? <span className={getLatencyColor(data.latency)}>{data.latency} ms</span> : "--"}
+                 <td className="px-6 py-4">
+                 {data.latency ? <span className={getLatencyColor(data.latency)}>{data.latency} ms</span> : "--"}
                 </td>
+                </>:
+                <>
+                 <td>
+                    --
+                </td>
+                <td>
+                    --
+                </td>
+                </>}   
                
             </tr>
         })}
