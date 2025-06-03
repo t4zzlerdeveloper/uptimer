@@ -4,8 +4,8 @@
 
 ![](https://img.shields.io/badge/PreAlpha-white)
 ![](https://img.shields.io/badge/Monitoring_Service-D8B4FE)
-![](https://img.shields.io/github/issues/t4zzlerdeveloper/rubium?color=86efac)
-![](https://img.shields.io/github/license/t4zzlerdeveloper/rubium?color=D8B4FE)
+![](https://img.shields.io/github/issues/t4zzlerdeveloper/uptimer?color=86efac)
+![](https://img.shields.io/github/license/t4zzlerdeveloper/uptimer?color=D8B4FE)
 
  <img height="350" src="/src/assets/screenshots/alpha.png" alt="Showcase Image"/>
 
